@@ -2,6 +2,12 @@ resource "azurerm_resource_group" "vm_rg" {
   name     = var.vm_rg_group_name
   location = var.vm_rg_group_location
 }
+
+resource "docker_image" "nginx" {
+  name         = "nginx:latest"
+  keep_locally = false
+}
+
 #creating azure container registry
 resource "azurerm_container_registry" "acr_demo" {
   name                = "blogcontainerregistry"
@@ -11,10 +17,6 @@ resource "azurerm_container_registry" "acr_demo" {
   admin_enabled       = false
 }
 
-resource "docker_image" "nginx" {
-  name         = "nginx:latest"
-  keep_locally = false
-}
 
 resource "docker_container" "nginx" {
   image = docker_image.nginx.latest
